@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  Text Style -->
+    <style name="Headline_1">
+        <item name="fontFamily">@font/mulish_700</item>
+        <item name="android:textSize">22sp</item>
+        <item name="lineHeight">27sp</item>
+    </style>
+
+    <style name="Headline_2">
+        <item name="fontFamily">@font/mulish_700</item>
+        <item name="android:textSize">20sp</item>
+        <item name="lineHeight">28sp</item>
+    </style>
+
+    <style name="Headline_3_1">
+        <item name="fontFamily">@font/mulish_700</item>
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">20sp</item>
+    </style>
+
+    <style name="Subtitle_1">
+        <item name="fontFamily">@font/mulish_700</item>
+        <item name="android:textSize">15sp</item>
+        <item name="lineHeight">20sp</item>
+    </style>
+
+    <style name="Subtitle_2">
+        <item name="fontFamily">@font/mulish_700</item>
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">17sp</item>
+    </style>
+
+    <style name="Subtitle_3">
+        <item name="fontFamily">@font/commissioner_500</item>
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">15sp</item>
+    </style>
+
+    <style name="Body_1_2">
+        <item name="fontFamily">@font/commissioner_400</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">20sp</item>
+    </style>
+
+    <style name="Text_Menu">
+        <item name="fontFamily">@font/mulish_600</item>
+        <item name="android:textSize">11sp</item>
+        <item name="lineHeight">14sp</item>
+    </style>
+
+    <style name="Text_1">
+        <item name="fontFamily">@font/commissioner_400</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">17sp</item>
+    </style>
+
+    <style name="Text_2">
+        <item name="fontFamily">@font/commissioner_400</item>
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">16sp</item>
+    </style>
+
+    <style name="Button_standart">
+        <item name="fontFamily">@font/mulish_700</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">20sp</item>
+    </style>
+
+    <style name="Button_small_1">
+        <item name="fontFamily">@font/mulish_700</item>
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">14sp</item>
+    </style>
+
+    <style name="Button_small_2">
+        <item name="fontFamily">@font/mulish_700</item>
+        <item name="android:textSize">11sp</item>
+        <item name="lineHeight">16sp</item>
+    </style>
+
+    <style name="Button_1">
+        <item name="fontFamily">@font/mulish_700</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">17sp</item>
+    </style>
+
+    <style name="Button_2">
+        <item name="fontFamily">@font/mulish_700</item>
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">15sp</item>
+    </style>
+</resources>

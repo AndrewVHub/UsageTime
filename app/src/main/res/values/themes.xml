@@ -1,9 +1,45 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.UsageTime" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.UsageTime" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/primary_gradient_bg</item>
+        <item name="android:colorEdgeEffect">@color/Accent_1</item>
     </style>
 
-    <style name="Theme.UsageTime" parent="Base.Theme.UsageTime" />
+    <style name="Theme.UsageTime" parent="Base.Theme.UsageTime" >
+        <item name="toolbarStyle">@style/Theme.VpodarokBTB.Toolbar</item>
+        <item name="android:statusBarColor">@color/Bg_page_1</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.VpodarokBTB.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="navigationIcon">@null</item>
+        <item name="android:gravity">start</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="titleTextAppearance">@style/Headline_3_1</item>
+
+        <!--два атрибута ниже выставлены, чтобы уменьшить расстояние
+        между иконкой навигации и тулбаром -->
+        <item name="contentInsetStartWithNavigation">0dp</item>
+        <item name="titleMarginStart">0dp</item>
+    </style>
+
+    <!--  Widget Style -->
+    <style name="Widget" />
+    <style name="Widget.Button" parent="@style/Widget.Material3.Button">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay12</item>
+        <item name="android:textAppearance">@style/Button_1</item>
+        <item name="elevation">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="background">?selectableItemBackground</item>
+    </style>
+
+    <style name="Widget.Button.Green" parent="Widget.Button">
+        <item name="android:textColor">@color/Button_text_1</item>
+        <item name="rippleColor">@color/Button_Pressed</item>
+        <item name="android:backgroundTint">@color/green_button_background_state</item>
+    </style>
 </resources>
