@@ -10,6 +10,8 @@ android {
     namespace = "ru.kaycom.usagetime"
     compileSdk = 35
 
+    viewBinding.enable = true
+
     defaultConfig {
         applicationId = "ru.kaycom.usagetime"
         minSdk = 26
