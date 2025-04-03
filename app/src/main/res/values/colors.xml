@@ -2,4 +2,25 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="Navigation_top">#FBF8FF</color>
+
+
+    <!--Text-->
+    <color name="Text_1">#28232E</color>
+    <color name="Text_2">#8C9397</color>
+    <color name="Text_3">#DCDFE0</color>
+    <color name="Text_4">#FFFFFF</color>
+
+    <color name="Button_text_1">#FFFFFF</color>
+    <color name="Button_Text_Pressed">#6A696C</color>
+    <color name="Button_Text_Disabled">#D6D5D8</color>
+    <color name="Button_Pressed">#098686</color>
+
+    <color name="Button_bg_1">#069999</color>
+    <color name="Button_bg_1_disabled">#B5E8E8</color>
+    <color name="Bg_page_1">#FBF8FF</color>
+
+    <color name="Accent_1">#069999</color>
+
 </resources>
