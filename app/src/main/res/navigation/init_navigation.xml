@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/agreementFragment"
-        android:name="ru.kaycom.usagetime.ui.fragments.agreement.AgreementFragment"
+        android:name="ru.andrewvhub.usagetime.ui.fragments.agreement.AgreementFragment"
         android:label="fragment_agreement"
         tools:layout="@layout/fragment_agreement" />
 </navigation>

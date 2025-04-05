@@ -7,13 +7,13 @@ plugins {
 }
 
 android {
-    namespace = "ru.kaycom.usagetime"
+    namespace = "ru.andrewvhub.usagetime"
     compileSdk = 35
 
     viewBinding.enable = true
 
     defaultConfig {
-        applicationId = "ru.kaycom.usagetime"
+        applicationId = "ru.andrewvhub.usagetime"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -23,6 +23,12 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            isMinifyEnabled = false
+            isDebuggable = true
+            resValue("string", "app_name", "UsageTime Debug")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
