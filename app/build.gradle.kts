@@ -79,4 +79,7 @@ dependencies {
 
     //RecyclerView
     implementation(libs.androidx.recyclerView)
+
+    //Lottie Animation
+    implementation(libs.lottie.animation)
 }

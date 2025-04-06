@@ -3,11 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/init_navigation"
-    app:startDestination="@id/agreementFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/agreementFragment"
         android:name="ru.andrewvhub.usagetime.ui.fragments.agreement.AgreementFragment"
         android:label="fragment_agreement"
-        tools:layout="@layout/fragment_agreement" />
+        tools:layout="@layout/fragment_agreement">
+        <action
+            android:id="@+id/action_agreementFragment_to_agreementBottomSheetFragment"
+            app:destination="@id/agreementBottomSheetFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/agreementBottomSheetFragment"
+        android:name="ru.andrewvhub.usagetime.ui.bottomSheet.AgreementBottomSheetFragment"
+        android:label="fragment_agreement_bottom_sheet"
+        tools:layout="@layout/fragment_agreement_bottom_sheet" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="ru.andrewvhub.usagetime.ui.fragments.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_agreementFragment"
+            app:destination="@id/agreementFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/init_navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

@@ -5,4 +5,9 @@ import ru.andrewvhub.usagetime.domain.useCase.UseCaseTest
 
 class AgreementViewModel(
     private val getTestUseCase: UseCaseTest
-): BaseViewModel() {}
+): BaseViewModel() {
+
+    fun navigateToAgreementDialog() {
+        mainNavigate(AgreementFragmentDirections.actionAgreementFragmentToAgreementBottomSheetFragment())
+    }
+}
