@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">UsageTime</string>
+
+
+    <!--SplashFragment-->
+    <string name="splash_fragment_title">Опять в Рилсах просидел?</string>
+
+    <!--Agreement BottomSheet Fragment-->
+    <string name="agreement_bottom_sheet_fragment_navigate_to_setting">Перейти в настройки</string>
+    <string name="agreement_bottom_sheet_fragment_title">Для работы приложения требуется разрешение</string>
+    <string name="agreement_bottom_sheet_fragment_description">Чтобы отслеживать статистику использования приложений, пожалуйста, разрешите приложению доступ к информации об использовании других приложений.Это необходимо для корректной работы всех функций приложения. Ваши данные будут использоваться только для формирования вашей личной статистики.</string>
+
+    <!--Agreement Fragment-->
+    <string name="agreement_fragment_toolbar_title">Добро пожаловать</string>
+    <string name="agreement_fragment_title">Узнайте, куда уходит ваше время</string>
+    <string name="agreement_fragment_start_button_text">Стартуем</string>
+
 </resources>
