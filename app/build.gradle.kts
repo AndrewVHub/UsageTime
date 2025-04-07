@@ -82,4 +82,7 @@ dependencies {
 
     //Lottie Animation
     implementation(libs.lottie.animation)
+
+    //Charts
+    implementation(libs.mp.android.chart)
 }

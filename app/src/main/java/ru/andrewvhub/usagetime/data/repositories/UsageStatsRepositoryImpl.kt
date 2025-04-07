@@ -4,8 +4,6 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager.INTERVAL_DAILY
 import android.os.Build
 import android.util.Log
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import ru.andrewvhub.usagetime.data.models.DataFetchException
 import ru.andrewvhub.usagetime.data.models.OperationResult
 import ru.andrewvhub.usagetime.data.models.getOrError
@@ -23,10 +21,19 @@ class UsageStatsRepositoryImpl(
     private val packageInfoProvider: PackageInfoProvider
 ) : UsageStatsRepository {
 
+    /**
+     * Получает статистику использования приложений за определенный период.
+     *
+     * @param startDate Начало периода в миллисекундах.
+     * @param endDate Конец периода в миллисекундах.
+     * @return `OperationResult.Success` с списком объектов `DailyUsage`, содержащих статистику использования приложений за каждый день периода,
+     * или `OperationResult.Error` в случае ошибки.
+     * @throws DataFetchException если произошла ошибка при получении статистики.
+     */
     override suspend fun getUsageForPeriod(
         startDate: Long,
         endDate: Long
-    ): OperationResult<List<DailyUsage>>  = withContext(Dispatchers.IO) {
+    ): OperationResult<List<DailyUsage>> {
         runCatching {
             val daysPeriod = getDayRanges(startDate, endDate)
             val dailyUsageApp = mutableSetOf<DailyUsageApp>()
@@ -47,6 +54,7 @@ class UsageStatsRepositoryImpl(
                     totalTimeMs += it.usageMs
                 }
                 val dailyTotalUsageByApp = DailyUsage(
+                    dateMs = start,
                     totalTimeMs = totalTimeMs,
                     totalLaunchCount = 0,
                     appUsageDetails = dailyUsageApp.toList()
@@ -54,18 +62,26 @@ class UsageStatsRepositoryImpl(
                 dailyTotalUsage.add(dailyTotalUsageByApp)
                 dailyUsageApp.clear()
             }
-            OperationResult.Success(dailyTotalUsage)
+            return OperationResult.Success(dailyTotalUsage)
         }.getOrElse { e ->
             Log.e("Repository", "Ошибка при получении статистики за период: ${e.message}")
-            OperationResult.Error(DataFetchException("Ошибка при получении статистики за период: ${e.message}"))
+            return OperationResult.Error(DataFetchException("Ошибка при получении статистики за период: ${e.message}"))
         }
     }
 
+    /**
+     * Получает статистику использования приложения за определенный период.
+     *
+     * @param packageName Имя пакета приложения.
+     * @param startDate Начало периода в миллисекундах.
+     * @param endDate Конец периода в миллисекундах.
+     * @return `OperationResult.Success` с объектом `AppUsagePeriodDetail`, содержащим статистику использования приложения за период, или `OperationResult.Error` в случае ошибки.
+     */
     override suspend fun getUsageForAppPeriod(
         packageName: String,
         startDate: Long,
         endDate: Long
-    ): OperationResult<AppUsagePeriodDetail> = withContext(Dispatchers.IO)  {
+    ): OperationResult<AppUsagePeriodDetail> {
         runCatching {
             val daysPeriod = getDayRanges(startDate, endDate)
 
@@ -81,7 +97,7 @@ class UsageStatsRepositoryImpl(
                 it.usageMs
             }
             val appName = packageInfoProvider.getNameAppByPackageName(packageName)
-            OperationResult.Success(AppUsagePeriodDetail(
+            return OperationResult.Success(AppUsagePeriodDetail(
                 appName = appName,
                 packageName = packageName,
                 totalUsageMs = totalUsageMs,
@@ -90,15 +106,23 @@ class UsageStatsRepositoryImpl(
             ))
         }.getOrElse { e ->
             Log.d("Repository", "Ошибка при получении статистики для приложения за период: ${e.message}")
-            OperationResult.Error(DataFetchException("Ошибка при получении статистики для приложения за период: ${e.message}"))
+            return OperationResult.Error(DataFetchException("Ошибка при получении статистики для приложения за период: ${e.message}"))
         }
     }
 
+    /**
+     * Вычисляет активное время использования приложения за один день.
+     *
+     * @param packageName Имя пакета приложения.
+     * @param startTime Начало периода в миллисекундах.
+     * @param endTime Конец периода в миллисекундах.
+     * @return `OperationResult.Success` с объектом `DailyUsageApp`, содержащим статистику использования приложения за день, или `OperationResult.Error` в случае ошибки.
+     */
     override suspend fun calculateActiveUsageForAppDay(
         packageName: String,
         startTime: Long,
         endTime: Long
-    ): OperationResult<DailyUsageApp> = withContext(Dispatchers.IO){
+    ): OperationResult<DailyUsageApp> {
         runCatching {
             val usageEvents = usageStatsProvider.queryEvents(startTime, endTime)
             var activeTime = 0L
@@ -134,7 +158,7 @@ class UsageStatsRepositoryImpl(
 
             val appName = packageInfoProvider.getNameAppByPackageName(packageName)
             val appIcon = packageInfoProvider.getImageAppByPackageName(packageName)
-            OperationResult.Success(DailyUsageApp(
+            return OperationResult.Success(DailyUsageApp(
                 appName = appName,
                 packageName = packageName,
                 dateMs = startTime,
@@ -144,10 +168,19 @@ class UsageStatsRepositoryImpl(
             ))
         }.getOrElse { e ->
             Log.d("Repository", "Ошибка при получении статистики для приложения за период: ${e.message}")
-            OperationResult.Error(DataFetchException("Ошибка при получении статистики для приложения за период: ${e.message}"))
+            return OperationResult.Error(DataFetchException("Ошибка при получении статистики для приложения за период: ${e.message}"))
         }
     }
 
+    /**
+     * Получает список пар (начало дня, конец дня) в миллисекундах для заданного периода.
+     *
+     * @param startDate Начало периода в миллисекундах.
+     * @param endDate Конец периода в миллисекундах.
+     * @return Список пар, где каждая пара представляет собой начало и конец дня в миллисекундах.
+     *         Например: [(1678886400000, 1678972799999), (1678972800000, 1679059199999)]
+     *         Они представляют собой временной диапазон для каждого дня в заданном интервале.
+     */
     private fun getDayRanges(startDate: Long, endDate: Long): List<Pair<Long, Long>> {
         val startDay = Instant.ofEpochMilli(startDate).atZone(ZoneId.systemDefault()).toLocalDate()
         val endDay = Instant.ofEpochMilli(endDate).atZone(ZoneId.systemDefault()).toLocalDate()

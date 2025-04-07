@@ -18,6 +18,7 @@ timber = "5.0.1"
 recyclerView = "1.4.0"
 coreAnimation = "1.0.0"
 lottieVersion = "6.6.0"
+mpAndroidChart = "v3.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,6 +52,8 @@ glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 lottie-animation = { module = "com.airbnb.android:lottie", version.ref = "lottieVersion"}
+
+mp-android-chart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpAndroidChart"}
 
 
 [plugins]

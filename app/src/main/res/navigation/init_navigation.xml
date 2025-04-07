@@ -13,6 +13,13 @@
         <action
             android:id="@+id/action_agreementFragment_to_agreementBottomSheetFragment"
             app:destination="@id/agreementBottomSheetFragment" />
+        <action
+            android:id="@+id/action_agreementFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/init_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
     <dialog
         android:id="@+id/agreementBottomSheetFragment"
@@ -31,5 +38,17 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/init_navigation"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/init_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="ru.andrewvhub.usagetime.ui.fragments.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" />
 </navigation>

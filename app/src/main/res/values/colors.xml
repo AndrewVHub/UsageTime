@@ -5,16 +5,10 @@
     <color name="transparent">#00000000</color>
     <color name="Navigation_top">#FBF8FF</color>
 
-
-    <!--Text-->
     <color name="Text_1">#28232E</color>
-    <color name="Text_2">#8C9397</color>
     <color name="Text_3">#DCDFE0</color>
-    <color name="Text_4">#FFFFFF</color>
 
     <color name="Button_text_1">#FFFFFF</color>
-    <color name="Button_Text_Pressed">#6A696C</color>
-    <color name="Button_Text_Disabled">#D6D5D8</color>
     <color name="Button_Pressed">#098686</color>
 
     <color name="Button_bg_1">#069999</color>
@@ -23,4 +17,11 @@
 
     <color name="Accent_1">#069999</color>
 
+    <color name="fill_secondary">#797A7D</color>
+    <color name="fill_tertiary">#A7A9AC</color>
+    <color name="main_color_active">#F15A22</color>
+    <color name="background_secondary">#F6F5F5</color>
+
+    <color name="system_error">#E85353</color>
+    <color name="main_color_gray_bb">#58595B</color>
 </resources>

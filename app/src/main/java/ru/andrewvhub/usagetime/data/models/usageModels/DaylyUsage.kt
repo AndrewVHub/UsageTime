@@ -1,8 +1,8 @@
 package ru.andrewvhub.usagetime.data.models.usageModels
 
-// Модель данных для одного дня (общая статистика)
 data class DailyUsage(
+    val dateMs: Long,
     val totalTimeMs: Long,
-    val totalLaunchCount: Int,             // Общее количество запусков всех приложений за этот день
+    val totalLaunchCount: Int,
     val appUsageDetails: List<DailyUsageApp>
 )
