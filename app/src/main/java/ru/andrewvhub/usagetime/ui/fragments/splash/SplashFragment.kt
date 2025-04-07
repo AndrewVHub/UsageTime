@@ -1,7 +1,6 @@
 package ru.andrewvhub.usagetime.ui.fragments.splash
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import ru.andrewvhub.usagetime.R
@@ -23,8 +22,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
             if (!hasUsageStatsPermission())
                 viewModel.navigateToAgreement()
             else
-                Log.d("OS4:SplashFragment", "Навигация на MainFragment")
+                viewModel.navigateToMain()
         }
     }
-
 }

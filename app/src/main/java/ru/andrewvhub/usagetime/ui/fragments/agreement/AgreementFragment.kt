@@ -30,7 +30,7 @@ class AgreementFragment : BaseFragment(R.layout.fragment_agreement) {
                 Log.d("OS4:AgreementFragment", "Разрешение отсутствует при клике, навигируем на Диалог")
                 viewModel.navigateToAgreementDialog()
             } else {
-                Log.d("OS4:AgreementFragment", "Разрешение уже есть при клике, навигируем дальше")
+                viewModel.navigateToMain()
             }
         }
     }
@@ -40,6 +40,7 @@ class AgreementFragment : BaseFragment(R.layout.fragment_agreement) {
         if (hasUsageStatsPermission() && !navigatedAfterPermissionGrant) {
             Log.d("OS4:AgreementFragment", "Разрешение есть в onResume, навигируем дальше")
             navigatedAfterPermissionGrant = true
+            viewModel.navigateToMain()
         } else if (!hasUsageStatsPermission()) {
             Log.d("OS4:AgreementFragment", "Разрешение отсутствует в onResume")
             navigatedAfterPermissionGrant = false // Сбрасываем флаг, если разрешение отозвано

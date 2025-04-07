@@ -6,7 +6,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import ru.andrewvhub.usagetime.core.BaseViewModel
 
-private const val MIN_DELAY = 4000L
+private const val MIN_DELAY = 2000L
 
 class SplashViewModel: BaseViewModel() {
 
@@ -19,5 +19,8 @@ class SplashViewModel: BaseViewModel() {
 
     fun navigateToAgreement() {
         mainNavigate(SplashFragmentDirections.actionSplashFragmentToAgreementFragment())
+    }
+    fun navigateToMain() {
+        mainNavigate(SplashFragmentDirections.actionSplashFragmentToMainFragment())
     }
 }

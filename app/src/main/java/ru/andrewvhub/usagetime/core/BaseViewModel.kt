@@ -1,20 +1,21 @@
 package ru.andrewvhub.usagetime.core
 
+import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import ru.andrewvhub.utils.SingleLiveEvent
 import timber.log.Timber
 
 abstract class BaseViewModel : ViewModel(), KoinComponent {
+
+    protected val resources: Resources by inject()
 
     private val _navigate = SingleLiveEvent<NavDirections>()
     val navigate: LiveData<NavDirections> = _navigate
@@ -43,16 +44,3 @@ fun ViewModel.launchSafe(
         final?.invoke()
     }
 }
-
-fun <T> CoroutineScope.asyncSafe(
-    body: suspend () -> T,
-    onFailure: ((error: Throwable) -> Unit)? = null,
-): Deferred<T?> =
-    async {
-        runCatching {
-            body()
-        }.getOrElse {
-            onFailure?.invoke(it)
-            null
-        }
-    }

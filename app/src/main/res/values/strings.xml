@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">UsageTime</string>
 
+    <!--String Array-->
+    <string-array name="days">
+        <item>ПН</item>
+        <item>ВТ</item>
+        <item>СР</item>
+        <item>ЧТ</item>
+        <item>ПТ</item>
+        <item>СБ</item>
+        <item>ВС</item>
+    </string-array>
+
+    <string name="time_hours_minutes">%1$d ч %2$d мин</string>
+    <string name="time_minutes">%1$d мин</string>
+    <string name="time_less_than_minute">менее минуты</string>
+    <string name="time_zero">0</string>
 
     <!--SplashFragment-->
     <string name="splash_fragment_title">Опять в Рилсах просидел?</string>
@@ -15,4 +30,8 @@
     <string name="agreement_fragment_title">Узнайте, куда уходит ваше время</string>
     <string name="agreement_fragment_start_button_text">Стартуем</string>
 
+    <!--Main Fragment-->
+    <string name="main_fragment_title_loading">Получение данных…</string>
+    <string name="main_fragment_title_done">Что там по времени?</string>
+    <string name="main_fragment_chart_item_counter_history_hours_unit">%1$.1f ч</string>
 </resources>
