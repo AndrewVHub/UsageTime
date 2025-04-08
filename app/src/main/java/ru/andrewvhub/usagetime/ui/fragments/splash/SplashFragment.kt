@@ -5,20 +5,17 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import ru.andrewvhub.usagetime.R
 import ru.andrewvhub.usagetime.core.BaseFragment
-import ru.andrewvhub.usagetime.databinding.FragmentSplashBinding
-import ru.andrewvhub.usagetime.ui.viewBinding.viewBinding
 import ru.andrewvhub.utils.extension.hasUsageStatsPermission
 import ru.andrewvhub.utils.extension.nonNullObserve
 
 class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
-    private val viewBinding by viewBinding(FragmentSplashBinding::bind)
     override val viewModel by viewModels<SplashViewModel>()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?): Unit = with(viewBinding) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.delayLiveData.nonNullObserve(viewLifecycleOwner) {
+        return viewModel.delayLiveData.nonNullObserve(viewLifecycleOwner) {
             if (!hasUsageStatsPermission())
                 viewModel.navigateToAgreement()
             else

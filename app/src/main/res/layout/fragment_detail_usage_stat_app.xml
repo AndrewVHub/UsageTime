@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.main.MainFragment">
+    tools:context=".ui.fragments.detailUsageStatApp.DetailUsageStatAppFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
         app:title="@string/main_fragment_title_loading">
 
         <ImageView
@@ -22,32 +23,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_refresh"
             tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/download"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center"
-            android:layout_marginEnd="@dimen/space_common_side"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_download"
-            tools:ignore="ContentDescription" />
     </com.google.android.material.appbar.MaterialToolbar>
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/loader"
-        android:layout_width="240dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="54dp"
-        android:layout_marginTop="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:0.93"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/stats_loading" />
 
     <ImageView
         android:id="@+id/previousWeek"
@@ -98,6 +74,16 @@
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/previousWeek" />
 
+    <ImageView
+        android:id="@+id/appIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@id/chart"
+        tools:ignore="ContentDescription" />
+
     <TextView
         android:id="@+id/totalUsageTime"
         style="@style/Subtitle_1"
@@ -108,30 +94,8 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintTop_toBottomOf="@id/chart"
+        app:layout_constraintTop_toBottomOf="@id/appIcon"
         tools:text="5 ч 47 мин" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:clipToPadding="false"
-        android:paddingBottom="30dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalUsageTime"
-        tools:listitem="@layout/item_daily_usage_app" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/contentGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="chart,currentDay,recyclerView,previousWeek,nextWeek,totalUsageTime"
-        tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/startGuideline"
@@ -146,4 +110,5 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/space_common_side" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

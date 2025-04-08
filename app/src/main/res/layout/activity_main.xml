@@ -18,6 +18,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/init_navigation"
-        tools:layout="@layout/fragment_agreement"/>
-
+        tools:layout="@layout/fragment_agreement" />
 </androidx.constraintlayout.widget.ConstraintLayout>

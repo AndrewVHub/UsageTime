@@ -4,7 +4,6 @@
     android:height="18dp"
     android:viewportWidth="18"
     android:viewportHeight="18">
-
     <group>
         <path
             android:pathData="M11 5L7 9L11 13"

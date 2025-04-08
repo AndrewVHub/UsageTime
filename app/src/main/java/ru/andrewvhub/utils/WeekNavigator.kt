@@ -4,7 +4,7 @@ import java.util.Calendar
 import java.util.Locale
 
 // Объект для управления неделями
-object WeekNavigator {
+class WeekNavigator {
 
     private var currentTime: Long
 

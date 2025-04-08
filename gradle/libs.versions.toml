@@ -19,6 +19,7 @@ recyclerView = "1.4.0"
 coreAnimation = "1.0.0"
 lottieVersion = "6.6.0"
 mpAndroidChart = "v3.1.0"
+gson = "2.10.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +55,8 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 lottie-animation = { module = "com.airbnb.android:lottie", version.ref = "lottieVersion"}
 
 mp-android-chart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpAndroidChart"}
+
+gson = { module = "com.google.code.gson:gson", version.ref = "gson"}
 
 
 [plugins]
