@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_box_2"
+    android:backgroundTint="@color/white">
+
+    <View
+        android:id="@+id/rightLine"
+        android:layout_width="4dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_error_message_line"
+        android:backgroundTint="@color/system_error"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleError"
+        style="@style/Body_1_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/system_error"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rightLine"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Некорректный код подтверждения" />
+
+    <TextView
+        android:id="@+id/description_error"
+        style="@style/Body_1_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/system_error"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rightLine"
+        app:layout_constraintTop_toBottomOf="@+id/titleError"
+        tools:text="Проверьте код или запросите новый" />
+</androidx.constraintlayout.widget.ConstraintLayout>

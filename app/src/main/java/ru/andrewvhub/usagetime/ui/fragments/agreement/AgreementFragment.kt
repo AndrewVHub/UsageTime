@@ -1,7 +1,6 @@
 package ru.andrewvhub.usagetime.ui.fragments.agreement
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.andrewvhub.usagetime.R
@@ -27,7 +26,6 @@ class AgreementFragment : BaseFragment(R.layout.fragment_agreement) {
 
         startButton.setOnThrottleClickListener {
             if (!hasUsageStatsPermission()) {
-                Log.d("OS4:AgreementFragment", "Разрешение отсутствует при клике, навигируем на Диалог")
                 viewModel.navigateToAgreementDialog()
             } else {
                 viewModel.navigateToMain()
@@ -38,14 +36,10 @@ class AgreementFragment : BaseFragment(R.layout.fragment_agreement) {
     override fun onResume() {
         super.onResume()
         if (hasUsageStatsPermission() && !navigatedAfterPermissionGrant) {
-            Log.d("OS4:AgreementFragment", "Разрешение есть в onResume, навигируем дальше")
             navigatedAfterPermissionGrant = true
             viewModel.navigateToMain()
         } else if (!hasUsageStatsPermission()) {
-            Log.d("OS4:AgreementFragment", "Разрешение отсутствует в onResume")
             navigatedAfterPermissionGrant = false // Сбрасываем флаг, если разрешение отозвано
-        } else {
-            Log.d("OS4:AgreementFragment", "Уже навигировали после получения разрешения или разрешение все еще есть")
         }
     }
 }

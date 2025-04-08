@@ -50,5 +50,19 @@
         android:id="@+id/mainFragment"
         android:name="ru.andrewvhub.usagetime.ui.fragments.main.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_detailUsageStatAppFragment"
+            app:destination="@id/detailUsageStatAppFragment"
+            app:enterAnim="@anim/nav_default_enter_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailUsageStatAppFragment"
+        android:name="ru.andrewvhub.usagetime.ui.fragments.detailUsageStatApp.DetailUsageStatAppFragment"
+        android:label="fragment_detail_usage_stat_app"
+        tools:layout="@layout/fragment_detail_usage_stat_app">
+        <argument
+            android:name="packageName"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -2,7 +2,6 @@ package ru.andrewvhub.usagetime.data.providers
 
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
-import android.util.Log
 import ru.andrewvhub.usagetime.domain.providers.PackageInfoProvider
 
 class PackageInfoProviderImpl(
@@ -16,15 +15,15 @@ class PackageInfoProviderImpl(
         }.getOrNull().orEmpty()
     }
 
+    //Тут можно обработать и выбросить кастомку. Да вообще много чего можно сделать
+    //Уменьшить код, оптимизировать получение инфы в целом
     override fun getImageAppByPackageName(packageName: String): Drawable? {
         return try {
             val applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
             packageManager.getApplicationIcon(applicationInfo)
         } catch (e: PackageManager.NameNotFoundException) {
-            Log.e("AppIcon", "Приложение с packageName '$packageName' не найдено: ${e.message}")
             null
         } catch (e: Exception) {
-            Log.e("AppIcon", "Ошибка при получении иконки приложения '$packageName': ${e.message}")
             null
         }
     }

@@ -3,11 +3,9 @@ package ru.andrewvhub.usagetime.data.repositories
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager.INTERVAL_DAILY
 import android.os.Build
-import android.util.Log
-import ru.andrewvhub.usagetime.data.models.DataFetchException
 import ru.andrewvhub.usagetime.data.models.OperationResult
+import ru.andrewvhub.usagetime.data.models.UsageErrorException
 import ru.andrewvhub.usagetime.data.models.getOrError
-import ru.andrewvhub.usagetime.data.models.usageModels.AppUsagePeriodDetail
 import ru.andrewvhub.usagetime.data.models.usageModels.DailyUsage
 import ru.andrewvhub.usagetime.data.models.usageModels.DailyUsageApp
 import ru.andrewvhub.usagetime.domain.providers.PackageInfoProvider
@@ -28,7 +26,7 @@ class UsageStatsRepositoryImpl(
      * @param endDate Конец периода в миллисекундах.
      * @return `OperationResult.Success` с списком объектов `DailyUsage`, содержащих статистику использования приложений за каждый день периода,
      * или `OperationResult.Error` в случае ошибки.
-     * @throws DataFetchException если произошла ошибка при получении статистики.
+     * @throws UsageErrorException.UsageForPeriodException если произошла ошибка при получении статистики.
      */
     override suspend fun getUsageForPeriod(
         startDate: Long,
@@ -39,7 +37,8 @@ class UsageStatsRepositoryImpl(
             val dailyUsageApp = mutableSetOf<DailyUsageApp>()
             val dailyTotalUsage = mutableListOf<DailyUsage>()
             daysPeriod.forEach { (start, end) ->
-                val oneDayPackageNames = usageStatsProvider.getPackagesName(INTERVAL_DAILY, start, end)
+                val oneDayPackageNames =
+                    usageStatsProvider.getPackagesName(INTERVAL_DAILY, start, end)
                 oneDayPackageNames.forEach { packageName ->
                     val usageAppByDay = calculateActiveUsageForAppDay(
                         packageName,
@@ -56,16 +55,14 @@ class UsageStatsRepositoryImpl(
                 val dailyTotalUsageByApp = DailyUsage(
                     dateMs = start,
                     totalTimeMs = totalTimeMs,
-                    totalLaunchCount = 0,
                     appUsageDetails = dailyUsageApp.toList()
                 )
                 dailyTotalUsage.add(dailyTotalUsageByApp)
                 dailyUsageApp.clear()
             }
             return OperationResult.Success(dailyTotalUsage)
-        }.getOrElse { e ->
-            Log.e("Repository", "Ошибка при получении статистики за период: ${e.message}")
-            return OperationResult.Error(DataFetchException("Ошибка при получении статистики за период: ${e.message}"))
+        }.getOrElse {
+            return OperationResult.Error(UsageErrorException.UsageForPeriodException())
         }
     }
 
@@ -75,38 +72,32 @@ class UsageStatsRepositoryImpl(
      * @param packageName Имя пакета приложения.
      * @param startDate Начало периода в миллисекундах.
      * @param endDate Конец периода в миллисекундах.
-     * @return `OperationResult.Success` с объектом `AppUsagePeriodDetail`, содержащим статистику использования приложения за период, или `OperationResult.Error` в случае ошибки.
+     * @return `OperationResult.Success` с списком объектов `DailyUsageApp`, содержащих статистику использования приложения за каждый день периода,
+     * или `OperationResult.Error` в случае ошибки.
+     * @throws UsageErrorException.UsageForAppPeriodException если произошла ошибка при получении статистики.
+     *
      */
     override suspend fun getUsageForAppPeriod(
         packageName: String,
         startDate: Long,
         endDate: Long
-    ): OperationResult<AppUsagePeriodDetail> {
+    ): OperationResult<List<DailyUsageApp>> {
         runCatching {
             val daysPeriod = getDayRanges(startDate, endDate)
-
             val activeUsageAppsByDay = mutableListOf<DailyUsageApp>()
             daysPeriod.forEach { (start, end) ->
-                activeUsageAppsByDay.add(calculateActiveUsageForAppDay(
-                    packageName,
-                    start,
-                    end
-                ).getOrError())
+                activeUsageAppsByDay.add(
+                    calculateActiveUsageForAppDay(
+                        packageName,
+                        start,
+                        end
+                    ).getOrError()
+                )
             }
-            val totalUsageMs = activeUsageAppsByDay.sumOf {
-                it.usageMs
-            }
-            val appName = packageInfoProvider.getNameAppByPackageName(packageName)
-            return OperationResult.Success(AppUsagePeriodDetail(
-                appName = appName,
-                packageName = packageName,
-                totalUsageMs = totalUsageMs,
-                totalLaunchCount = 0,
-                dailyUsage = activeUsageAppsByDay,
-            ))
-        }.getOrElse { e ->
-            Log.d("Repository", "Ошибка при получении статистики для приложения за период: ${e.message}")
-            return OperationResult.Error(DataFetchException("Ошибка при получении статистики для приложения за период: ${e.message}"))
+            return OperationResult.Success(activeUsageAppsByDay)
+
+        }.getOrElse {
+            return OperationResult.Error(UsageErrorException.UsageForAppPeriodException())
         }
     }
 
@@ -117,6 +108,7 @@ class UsageStatsRepositoryImpl(
      * @param startTime Начало периода в миллисекундах.
      * @param endTime Конец периода в миллисекундах.
      * @return `OperationResult.Success` с объектом `DailyUsageApp`, содержащим статистику использования приложения за день, или `OperationResult.Error` в случае ошибки.
+     * @throws UsageErrorException.UsageForAppPeriodException если произошла ошибка при получении статистики.
      */
     override suspend fun calculateActiveUsageForAppDay(
         packageName: String,
@@ -146,6 +138,7 @@ class UsageStatsRepositoryImpl(
                     foregroundEventType -> {
                         foregroundTimestamp = event.timeStamp
                     }
+
                     backgroundEventType -> {
                         if (foregroundTimestamp > 0) {
                             val sessionTime = event.timeStamp - foregroundTimestamp
@@ -158,17 +151,17 @@ class UsageStatsRepositoryImpl(
 
             val appName = packageInfoProvider.getNameAppByPackageName(packageName)
             val appIcon = packageInfoProvider.getImageAppByPackageName(packageName)
-            return OperationResult.Success(DailyUsageApp(
-                appName = appName,
-                packageName = packageName,
-                dateMs = startTime,
-                usageMs = activeTime,
-                launchCount = 0,
-                icon = appIcon
-            ))
-        }.getOrElse { e ->
-            Log.d("Repository", "Ошибка при получении статистики для приложения за период: ${e.message}")
-            return OperationResult.Error(DataFetchException("Ошибка при получении статистики для приложения за период: ${e.message}"))
+            return OperationResult.Success(
+                DailyUsageApp(
+                    appName = appName,
+                    packageName = packageName,
+                    dateMs = startTime,
+                    usageMs = activeTime,
+                    icon = appIcon
+                )
+            )
+        }.getOrElse {
+            return OperationResult.Error(UsageErrorException.ActiveUsageForAppDayException())
         }
     }
 

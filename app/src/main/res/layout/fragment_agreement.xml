@@ -36,9 +36,9 @@
         android:text="@string/agreement_fragment_title"
         android:textAlignment="center"
         android:textAllCaps="true"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/loader" />
 
     <com.google.android.material.button.MaterialButton

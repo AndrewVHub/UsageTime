@@ -7,6 +7,5 @@ data class DailyUsageApp(
     val packageName: String,
     val dateMs: Long,
     val usageMs: Long,
-    val launchCount: Int,
     val icon: Drawable? = null
 )

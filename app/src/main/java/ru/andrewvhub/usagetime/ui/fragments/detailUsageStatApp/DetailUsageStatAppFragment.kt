@@ -1,8 +1,9 @@
-package ru.andrewvhub.usagetime.ui.fragments.main
+package ru.andrewvhub.usagetime.ui.fragments.detailUsageStatApp
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -12,30 +13,26 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.andrewvhub.usagetime.R
 import ru.andrewvhub.usagetime.core.BaseFragment
-import ru.andrewvhub.usagetime.databinding.FragmentMainBinding
-import ru.andrewvhub.usagetime.ui.itemDecorator.LinearLayoutItemDecorator
+import ru.andrewvhub.usagetime.databinding.FragmentDetailUsageStatAppBinding
 import ru.andrewvhub.usagetime.ui.viewBinding.viewBinding
-import ru.andrewvhub.utils.adapter.Adapter
-import ru.andrewvhub.utils.extension.addSystemBottomSpace
 import ru.andrewvhub.utils.extension.addSystemTopSpace
-import ru.andrewvhub.utils.extension.dp
 import ru.andrewvhub.utils.extension.formatDate
 import ru.andrewvhub.utils.extension.getColor
 import ru.andrewvhub.utils.extension.getFont
+import ru.andrewvhub.utils.extension.load
 import ru.andrewvhub.utils.extension.nonNullObserve
 import ru.andrewvhub.utils.extension.setOnThrottleClickListener
-import ru.andrewvhub.utils.extension.shareJsonFile
 import ru.andrewvhub.utils.extension.showSnackBar
 
-class MainFragment : BaseFragment(R.layout.fragment_main) {
+class DetailUsageStatAppFragment : BaseFragment(R.layout.fragment_detail_usage_stat_app) {
 
-    private val viewBinding by viewBinding(FragmentMainBinding::bind)
-    override val viewModel by viewModel<MainViewModel>()
-    private val adapter: Adapter by inject()
+    private val args: DetailUsageStatAppFragmentArgs by navArgs()
+    private val viewBinding by viewBinding(FragmentDetailUsageStatAppBinding::bind)
+    override val viewModel by viewModel<DetailUsageStatAppViewModel> { parametersOf(args.packageName) }
 
     private var currentHighlight: Highlight? = null
 
@@ -44,7 +41,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 if (e is BarEntry && currentHighlight?.x != h?.x) {
                     currentHighlight = h
-                    val dayOfWeekIndex = e.x.toInt() // Получаем индекс дня недели (0-6)
+                    val dayOfWeekIndex = e.x.toInt()
                     viewModel.getOneDayUsageByDay(dayOfWeekIndex)
                 }
             }
@@ -59,7 +56,10 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     private val valueFormatterYAxis: ValueFormatter
         get() = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                return getString(R.string.main_fragment_chart_item_counter_history_hours_unit, value)
+                return getString(
+                    R.string.main_fragment_chart_item_counter_history_hours_unit,
+                    value
+                )
             }
         }
 
@@ -67,24 +67,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         super.onViewCreated(view, savedInstanceState)
 
         toolbar.addSystemTopSpace(false)
-        recyclerView.addSystemBottomSpace(true)
-
-        recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(
-            LinearLayoutItemDecorator(
-                left = resources.getDimensionPixelSize(R.dimen.space_common_side),
-                right = resources.getDimensionPixelSize(R.dimen.space_common_side),
-                divider = 24.dp
-            )
-        )
-
-        download.setOnThrottleClickListener {
-            viewModel.createJsonFromListAndSave()?.let { shareJsonFile(it) }
-        }
-
-        refresh.setOnThrottleClickListener {
-            viewModel.refreshData()
-        }
+        toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
 
         previousWeek.setOnThrottleClickListener {
             viewModel.getPreviousWeekRange()
@@ -93,18 +76,16 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
             viewModel.getNextWeekRange()
         }
 
+        refresh.setOnThrottleClickListener {
+            viewModel.refreshData()
+        }
+
         viewModel.apply {
-            dailyUsageList.nonNullObserve(viewLifecycleOwner,::handleChartHistory)
+            dailyUsageBarEntryList.nonNullObserve(viewLifecycleOwner, ::handleChartHistory)
             highlightLiveData.nonNullObserve(viewLifecycleOwner) {
                 currentHighlight = it
+                highlightLastBar(it)
             }
-
-            dailyUsageForPeriodLiveData.nonNullObserve(viewLifecycleOwner) {
-                adapter.setCollection(it) {
-                    recyclerView.smoothScrollToPosition(0)
-                }
-            }
-
             totalTimeByDayLiveData.nonNullObserve(viewLifecycleOwner) {
                 totalUsageTime.text = it
             }
@@ -112,25 +93,11 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
                 currentDay.text = it.formatDate()
             }
 
+            appImageLiveData.nonNullObserve(viewLifecycleOwner) { appIcon.load(it) }
             errorMessage.nonNullObserve(viewLifecycleOwner) { showSnackBar(it) }
-            isLoading.nonNullObserve(viewLifecycleOwner,::handleLoading)
-        }
-    }
-
-    private fun handleLoading(isLoading: Boolean): Unit = with(viewBinding) {
-        refresh.isEnabled = !isLoading
-        if (isLoading) {
-            loader.resumeAnimation()
-            toolbar.title = getString(R.string.main_fragment_title_loading)
-            download.isVisible = false
-            contentGroup.isVisible = false
-            loader.isVisible = true
-        } else {
-            toolbar.title = getString(R.string.main_fragment_title_done)
-            download.isVisible = true
-            loader.pauseAnimation()
-            contentGroup.isVisible = true
-            loader.isVisible = false
+            isLoadingLiveData.nonNullObserve(viewLifecycleOwner) {
+                refresh.isEnabled = !it
+            }
         }
     }
 
@@ -202,8 +169,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     }
 
     private fun highlightLastBar(currentHighlight: Highlight) {
-       viewBinding.chart.apply {
-           highlightValue(currentHighlight, false)
-       }
+        viewBinding.chart.apply {
+            highlightValue(currentHighlight, false)
+        }
     }
 }

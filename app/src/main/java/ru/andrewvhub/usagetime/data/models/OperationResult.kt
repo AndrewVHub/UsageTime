@@ -5,13 +5,9 @@ sealed class OperationResult<out T> {
     data class Error(val error: Throwable) : OperationResult<Nothing>()
 }
 
-fun <T> OperationResult<T>.getOrElse(handler: (Throwable) -> T): T {
+fun <T> OperationResult<T>.getOrError(): T {
     return when (this) {
         is OperationResult.Success -> data
-        is OperationResult.Error -> handler(error)
+        is OperationResult.Error -> throw error
     }
-}
-
-fun <T> OperationResult<T>.getOrError() = getOrElse {
-    throw it
 }

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import ru.andrewvhub.usagetime.ui.MainNavigator
 import ru.andrewvhub.utils.extension.navigateSafe
 import ru.andrewvhub.utils.extension.nonNullObserve
@@ -22,10 +21,6 @@ abstract class BaseFragment(private val layoutResId: Int) : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(layoutResId, container, false).also {
-        viewModel?.navigate?.nonNullObserve(viewLifecycleOwner) {
-            findNavController().navigateSafe(it)
-        }
-
         viewModel?.mainNavigate?.nonNullObserve(viewLifecycleOwner) {
             mainNavigator?.navigateSafe(it)
         }

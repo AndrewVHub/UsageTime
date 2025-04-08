@@ -17,7 +17,7 @@
         android:layout_marginVertical="@dimen/spacing_extra_small"
         android:layout_marginStart="@dimen/spacing_extra_small"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/appName"

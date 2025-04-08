@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.WindowCompat
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.andrewvhub.usagetime.ui.MainNavigator
 import ru.andrewvhub.utils.extension.navigateSafe
@@ -24,14 +23,9 @@ abstract class BaseBottomSheetDialogFragment(
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(layoutResId, container, false).also {
 
-        //сделать иконки на статус-баре белыми
         dialog?.window?.let {
             val windowInsetController = WindowCompat.getInsetsController(it, it.decorView)
             windowInsetController.isAppearanceLightStatusBars = isAppearanceLightStatusBars
-        }
-
-        viewModel?.navigate?.nonNullObserve(viewLifecycleOwner) {
-            findNavController().navigateSafe(it)
         }
 
         viewModel?.mainNavigate?.nonNullObserve(viewLifecycleOwner) {

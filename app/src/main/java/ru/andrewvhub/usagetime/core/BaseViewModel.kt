@@ -11,17 +11,17 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import ru.andrewvhub.utils.SingleLiveEvent
+import ru.andrewvhub.utils.extension.getMessageFromThrowable
 import timber.log.Timber
 
 abstract class BaseViewModel : ViewModel(), KoinComponent {
 
     protected val resources: Resources by inject()
 
-    private val _navigate = SingleLiveEvent<NavDirections>()
-    val navigate: LiveData<NavDirections> = _navigate
-
     private val _mainNavigate = SingleLiveEvent<NavDirections>()
     val mainNavigate: LiveData<NavDirections> = _mainNavigate
+
+    fun Throwable.handleThrowable() = resources.getMessageFromThrowable(this)
 
     fun mainNavigate(destination: NavDirections) {
         _mainNavigate.value = destination
@@ -37,7 +37,7 @@ fun ViewModel.launchSafe(
     try {
         start?.invoke()
         body()
-    } catch (error: Exception) {
+    } catch (error: Throwable) {
         Timber.tag("LAUNCH_SAFE").e(error)
         onError?.invoke(error)
     } finally {
